@@ -1,0 +1,118 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "mongodb"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String?
+  email          String?   @unique
+  emailVerified  DateTime?
+  image          String?
+  hashedPassword String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  favoriteIds    String[] @db.ObjectId
+  accounts       Account[]
+  posts          Post[]
+  comments       Comment[]
+  hearts         Heart[]
+  blogs          Blog[]
+  role           UserRole @default(USER)
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  CREATOR
+}
+
+model Post {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now())
+  title     String
+  published Boolean   @default(false)
+  userId    String    @db.ObjectId
+  starId    String?    @db.ObjectId
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments  Comment[] 
+  hearts    Heart[]
+  star      Star?      @relation(fields: [starId], references: [id], onDelete: Cascade)
+}
+
+model Blog {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now())
+  imgSrc    String
+  title     String
+  content   String
+  category  String
+  published Boolean   @default(false)
+  userId    String    @db.ObjectId
+  starId    String?    @db.ObjectId
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hearts    Heart[]   
+  comments  Comment[]
+  star      Star?      @relation(fields: [starId], references: [id], onDelete: Cascade)
+}
+
+
+model Heart {
+  id     String   @id @default(auto()) @map("_id") @db.ObjectId
+  postId String?  @db.ObjectId
+  userId String   @db.ObjectId
+  blogId String?  @db.ObjectId
+  post   Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  blog   Blog?    @relation(fields: [blogId], references: [id], onDelete: Cascade)
+}
+
+model Comment {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  post      Post?     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id])
+  blog      Blog?     @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  blogId    String?   @db.ObjectId
+  title     String
+  postId    String?   @db.ObjectId
+  userId    String    @db.ObjectId
+  createdAt DateTime  @default(now())
+
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+}
+
+model Star{
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  profile   String
+  vote      Int
+  posts     Post[]
+  blogs     Blog[]
+
+}
+
+
