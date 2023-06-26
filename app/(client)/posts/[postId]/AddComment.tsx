@@ -2,14 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from 'react-hot-toast';
-import { User } from "@prisma/client";
+import toast from "react-hot-toast";
+import { User } from "next-auth";
 import axios from "axios";
-
 
 interface AddCommentProps {
   postId: string;
-  currentUser?: User | null;
+  currentUser?: User;
 }
 export default function AddComment({ postId, currentUser }: AddCommentProps): JSX.Element {
   const [content, setContent] = useState("");
@@ -19,7 +18,7 @@ export default function AddComment({ postId, currentUser }: AddCommentProps): JS
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-  
+
     if (content.length < 1) {
       setLoading(false);
       toast.error("Comment cannot be empty.");
@@ -41,23 +40,19 @@ export default function AddComment({ postId, currentUser }: AddCommentProps): JS
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full my-5">
+    <form onSubmit={handleSubmit} className="my-5 w-full">
       <span className="t-10" />
       <textarea
         className=" 
+          h-15 
           w-full 
           rounded-2xl 
-          bordered
-        border-slate-300
-        dark:border-slate-500
-        dark:bg-slate-800
-          border-2 
-        hover:dark:border-slate-100
-        hover:border-black
+        border-2
+        px-3
+          py-1
+          hover:border-black
           disabled:cursor-not-allowed
-          h-15
-          px-3
-          py-1"
+          hover:dark:border-slate-100"
         disabled={!currentUser}
         placeholder={currentUser ? "Comment here..." : "Please sign in to comment."}
         value={content}
@@ -65,7 +60,7 @@ export default function AddComment({ postId, currentUser }: AddCommentProps): JS
         onChange={(e) => setContent(e.target.value)}
       />
 
-      <div className="flex mt-1 items-center justify-between">
+      <div className="mt-1 flex items-center justify-between">
         <button
           type="submit"
           disabled={!currentUser}
@@ -74,16 +69,16 @@ export default function AddComment({ postId, currentUser }: AddCommentProps): JS
                 flex
                 h-10
                 min-w-[100px]
-                rounded-xl
                 items-center
                 justify-center
+                rounded-xl
                 border-2
               text-white
                 ${currentUser ? "bg-blue-600" : "bg-slate-200"}     
             `}
         >
           {loading ? (
-            <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg className="h-5 w-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
               <path
                 className="opacity-75"

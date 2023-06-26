@@ -1,18 +1,14 @@
 import { NextResponse } from "next/server";
 
-import prisma from "@/app/libs/prismadb";
+import { db } from "@/lib/db";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 
-export async function POST(
-  request: Request, 
-) {
-
+export async function POST(request: Request) {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
     return NextResponse.error();
   }
-  
 
   const body = await request.json();
   const title = body.title;
@@ -21,11 +17,11 @@ export async function POST(
     NextResponse.error();
   }
 
-  const post = await prisma.post.create({
+  const post = await db.post.create({
     data: {
       title: title,
       userId: currentUser.id,
-    }
+    },
   });
 
   return NextResponse.json(post);

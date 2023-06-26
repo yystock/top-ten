@@ -6,27 +6,36 @@ generator client {
 }
 
 datasource db {
-  provider          = "mongodb"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+
+  relationMode = "prisma"
 }
 
-model User {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  name           String?
-  email          String?   @unique
-  emailVerified  DateTime?
-  image          String?
-  hashedPassword String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  favoriteIds    String[] @db.ObjectId
-  accounts       Account[]
-  posts          Post[]
-  comments       Comment[]
-  hearts         Heart[]
-  blogs          Blog[]
-  role           UserRole @default(USER)
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum UserRole {
@@ -35,84 +44,139 @@ enum UserRole {
   CREATOR
 }
 
+model User {
+  id             String          @id @default(cuid())
+  name           String?
+  email          String?         @unique
+  emailVerified  DateTime?
+  image          String?
+  hashedPassword String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  accounts       Account[]
+  active         Boolean         @default(false) // New
+  activateTokens ActivateToken[]
+
+  username     String?   @unique
+  votes        Vote[]
+  lastTimeVote DateTime?
+
+  posts         Post[]
+  comments      Comment[]
+  sessions      Session[]
+  postHearts    PostHeart[]
+  blogHearts    BlogHeart[]
+  commentHearts CommentHeart[]
+  blogs         Blog[]
+
+  role UserRole @default(USER)
+}
+
+model Vote {
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  star   Star   @relation(fields: [starId], references: [id], onDelete: Cascade)
+  starId String
+
+  @@index([starId])
+}
+
 model Post {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime  @default(now())
+  id        String      @id @default(cuid())
+  createdAt DateTime    @default(now())
   title     String
-  published Boolean   @default(false)
-  userId    String    @db.ObjectId
-  starId    String?    @db.ObjectId
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  comments  Comment[] 
-  hearts    Heart[]
-  star      Star?      @relation(fields: [starId], references: [id], onDelete: Cascade)
+  published Boolean     @default(false)
+  userId    String
+  starId    String?
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments  Comment[]
+  hearts    PostHeart[]
+  star      Star?       @relation(fields: [starId], references: [id], onDelete: Cascade)
+
+  @@index([id])
 }
 
 model Blog {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime  @default(now())
+  id        String      @id @default(cuid())
+  slug      String      @unique
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
   imgSrc    String
   title     String
   content   String
   category  String
-  published Boolean   @default(false)
-  userId    String    @db.ObjectId
-  starId    String?    @db.ObjectId
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  hearts    Heart[]   
+  views     Int         @default(0)
+  published Boolean     @default(false)
+  authorId  String
+  starId    String?
+  user      User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  hearts    BlogHeart[]
   comments  Comment[]
-  star      Star?      @relation(fields: [starId], references: [id], onDelete: Cascade)
+  star      Star?       @relation(fields: [starId], references: [id], onDelete: Cascade)
+
+  @@index([title])
 }
 
+model BlogHeart {
+  blogId String
+  userId String
+  blog   Blog   @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-model Heart {
-  id     String   @id @default(auto()) @map("_id") @db.ObjectId
-  postId String?  @db.ObjectId
-  userId String   @db.ObjectId
-  blogId String?  @db.ObjectId
-  post   Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
-  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  blog   Blog?    @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  @@id([userId, blogId])
+}
+
+model PostHeart {
+  postId String
+  userId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, postId])
 }
 
 model Comment {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  post      Post?     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  user      User      @relation(fields: [userId], references: [id])
-  blog      Blog?     @relation(fields: [blogId], references: [id], onDelete: Cascade)
-  blogId    String?   @db.ObjectId
+  id        String         @id @default(cuid())
+  post      Post?          @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User           @relation(fields: [userId], references: [id])
+  blog      Blog?          @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  blogId    String?
   title     String
-  postId    String?   @db.ObjectId
-  userId    String    @db.ObjectId
-  createdAt DateTime  @default(now())
-
+  postId    String?
+  userId    String
+  createdAt DateTime       @default(now())
+  hearts    CommentHeart[]
+  replyToId String?
+  replyTo   Comment?       @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[]      @relation("ReplyTo")
 }
 
-model Account {
-  id                String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId            String  @db.ObjectId
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? @db.String
-  access_token      String? @db.String
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.String
-  session_state     String?
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  @@unique([provider, providerAccountId])
+model CommentHeart {
+  commentId String
+  userId    String
+  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, commentId])
 }
 
-model Star{
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  profile   String
-  vote      Int
-  posts     Post[]
-  blogs     Blog[]
-
+model Star {
+  id      String @id @default(cuid())
+  name    String
+  picture String
+  vote    Int
+  posts   Post[]
+  blogs   Blog[]
+  Vote    Vote[]
 }
 
+model ActivateToken {
+  id          Int       @id @default(autoincrement())
+  token       String    @unique
+  createdAt   DateTime  @default(now())
+  activatedAt DateTime?
 
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}

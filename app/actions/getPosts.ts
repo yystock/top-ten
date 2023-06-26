@@ -1,25 +1,19 @@
-import prisma from "../libs/prismadb";
+import { db } from "@/lib/db";
 
-export default async function getPosts(
-) {
+export default async function getPosts() {
   try {
-    const data = await prisma.post.findMany({
-        include: {
+    const data = await db.post.findMany({
+      include: {
         user: true,
         hearts: true,
         comments: true,
-        },
-        orderBy: {
+      },
+      orderBy: {
         createdAt: "desc",
-        },
-    })
+      },
+    });
 
-    const safeData = data.map((d) => ({
-      ...d,
-      createdAt: d.createdAt.toISOString(),
-    }));
-
-    return safeData;
+    return data;
   } catch (error: any) {
     throw new Error(error);
   }

@@ -1,11 +1,12 @@
 import getUsers from "../actions/getUsers";
-import UserTable from "../components/UserTable";
+import { columns } from "./columns";
+import { DataTable } from "@/components/ui/DataTable";
+
 const Dashboard = async () => {
-  
-  const users = await getUsers()
+  const users = await getUsers();
   return (
-    <div className="container">
-        <UserTable users={users}/>
+    <div className="container mx-auto h-full py-10">
+      <DataTable columns={columns} data={users} />
     </div>
   );
 };

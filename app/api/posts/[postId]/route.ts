@@ -1,17 +1,13 @@
 import { NextResponse } from "next/server";
 
-
 import getCurrentUser from "@/app/actions/getCurrentUser";
-import prisma from "@/app/libs/prismadb";
+import { db } from "@/lib/db";
 
 interface IParams {
   postId?: string;
 }
 
-export async function DELETE(
-  request: Request, 
-  { params }: { params: IParams }
-) {
+export async function DELETE(request: Request, { params }: { params: IParams }) {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
@@ -20,15 +16,15 @@ export async function DELETE(
 
   const { postId } = params;
 
-  if (!postId || typeof postId !== 'string') {
-    throw new Error('Invalid ID');
+  if (!postId || typeof postId !== "string") {
+    throw new Error("Invalid ID");
   }
 
-  const post = await prisma.post.deleteMany({
+  const post = await db.post.deleteMany({
     where: {
       id: postId,
-      userId: currentUser.id
-    }
+      userId: currentUser.id,
+    },
   });
 
   return NextResponse.json(post);

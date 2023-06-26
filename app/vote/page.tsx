@@ -1,14 +1,12 @@
-import getCurrentUser from "../actions/getCurrentUser";
-import Avatar from "../components/Avatar";
-
-
+import Avatar from "@/components/Avatar";
+import { getCurrentUser } from "@/lib/session";
 
 export default async function Vote() {
- const currentUser = await getCurrentUser();
+  const currentUser = await getCurrentUser();
   return (
     <div className="w-full flex-col">
       <div className="flex justify-center">
-        <svg className="w-24 h-24 z-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" id="crown">
+        <svg className="z-50 h-24 w-24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" id="crown">
           <path
             fill="#fecb5b"
             d="M27.793 13.207 22.5 18.5 16.493 7.41c-.155.055-.319.09-.493.09s-.338-.035-.493-.09L9.5 18.5l-5.293-5.293a.991.991 0 0 1-.469.245L6.5 24.5h19l2.762-11.048a.991.991 0 0 1-.469-.245z"
@@ -43,4 +41,3 @@ export default async function Vote() {
     </div>
   );
 }
-
