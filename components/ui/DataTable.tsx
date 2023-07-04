@@ -2,7 +2,7 @@
 import * as React from "react";
 import { ColumnDef, SortingState, flexRender, getCoreRowModel, useReactTable, getSortedRowModel, getPaginationRowModel } from "@tanstack/react-table";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./Table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Button } from "./Button";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
