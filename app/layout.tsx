@@ -8,6 +8,7 @@ import ToasterProvider from "./providers/ToasterProvider";
 import RegisterModal from "@/components/modals/RegisterModal";
 import { ThemeProvider } from "./providers/ThemeProvider";
 import LoginModal from "@/components/modals/LoginModal";
+import QueryProvider from "./providers/QueryClientProvider";
 
 export const metadata = {
   title: "Create Next App",
@@ -30,14 +31,16 @@ export default async function RootLayout({ children, authModal }: { children: Re
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <ToasterProvider />
-          <LoginModal />
-          <RegisterModal />
-          {authModal}
+          <QueryProvider>
+            <ToasterProvider />
+            <LoginModal />
+            <RegisterModal />
+            {authModal}
 
-          <Nav />
+            <Nav />
 
-          <div className="container mx-auto h-full max-w-7xl pt-12">{children}</div>
+            <div className="container mx-auto h-full max-w-7xl pt-12">{children}</div>
+          </QueryProvider>
         </ThemeProvider>
       </body>
     </html>

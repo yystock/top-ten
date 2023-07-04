@@ -2,11 +2,12 @@
 import { signOut } from "next-auth/react";
 
 import Avatar from "../Avatar";
-import { User } from "next-auth";
 import Link from "next/link";
+import { User } from "next-auth";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/DropdownMenu";
+
 interface UserMenuProps {
-  currentUser?: Pick<User, "name" | "image" | "email">;
+  currentUser?: User;
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
@@ -23,7 +24,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
           <>
             <div className="flex items-center justify-start gap-2 p-2">
               <div className="flex flex-col space-y-1 leading-none">
-                {currentUser.name && <p className="font-medium">{currentUser.name}</p>}
+                {currentUser.username && <p className="font-medium">{currentUser.username}</p>}
                 {currentUser.email && <p className="w-[200px] truncate text-sm text-muted-foreground">{currentUser.email}</p>}
               </div>
             </div>
@@ -39,6 +40,13 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
             <DropdownMenuItem asChild>
               <Link href="/create">Create</Link>
             </DropdownMenuItem>
+            {currentUser.role === "ADMIN" && (
+              <DropdownMenuItem asChild>
+                <Link href="/dashboard" className="font-semibold">
+                  Admin Dashboard
+                </Link>
+              </DropdownMenuItem>
+            )}
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="cursor-pointer"

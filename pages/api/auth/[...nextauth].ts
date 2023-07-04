@@ -29,7 +29,6 @@ export const authOptions: NextAuthOptions = {
         password: { label: "password", type: "password" },
       },
       async authorize(credentials) {
-        console.log(credentials);
         if (!credentials?.email || !credentials?.password) {
           throw new Error("Invalid credentials");
         }
@@ -56,7 +55,7 @@ export const authOptions: NextAuthOptions = {
         return {
           id: user.id,
           email: user.email,
-          name: user.name,
+          username: user.username,
           image: user.image,
           role: user.role,
         };
@@ -71,46 +70,69 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
+    signIn: async ({ user, account, profile }) => {
+      if (!profile?.email) {
+        throw new Error("no emaiil");
+      }
+      if (account?.provider === "google" || "twitter") {
+        const user = await db.user.upsert({
+          where: {
+            email: profile.email,
+          },
+          create: {
+            email: profile.email,
+            name: profile.name,
+            username: nanoid(10),
+            image: (profile as any).picture,
+          },
+          update: {
+            name: profile.name,
+            image: (profile as any).picture,
+          },
+        });
+      }
+      return true;
+    },
     session: async ({ session, token }) => {
+      console.log("we are in a session");
       if (token) {
         session.user.id = token.id;
         session.user.image = token.picture;
         session.user.role = token.role;
-        session.user.name = token.name;
+        session.user.username = token.username;
         session.user.email = token.email;
       }
       return session;
     },
-    jwt: async ({ user, token }) => {
-      console.log("jwt!");
-      const dbUser = await db.user.findFirst({
-        where: {
-          email: token.email,
-        },
-      });
-
-      if (!dbUser) {
-        token.id = user!.id;
-        return token;
-      }
-      if (!dbUser.name) {
-        await db.user.update({
+    jwt: async ({ user, token, account, profile }) => {
+      if (profile) {
+        if (user) {
+          token.email = user.email;
+          token.id = user.id;
+          token.role = user.role;
+          token.picture = user.image;
+          token.username = user.username;
+          return token;
+        }
+        console.log("jwt!");
+        const dbUser = await db.user.findUnique({
           where: {
-            id: dbUser.id,
-          },
-          data: {
-            name: nanoid(10),
+            email: profile.email,
           },
         });
+
+        if (!dbUser) {
+          throw new Error("No user found");
+        }
+
+        token.id = dbUser.id;
+        token.role = dbUser.role;
+        token.picture = dbUser.image;
+        token.username = dbUser.username;
+        token.email = dbUser.email;
       }
 
-      return {
-        id: dbUser.id,
-        picture: dbUser.image,
-        role: dbUser.role,
-        name: dbUser.name,
-        email: dbUser.email,
-      };
+      return token;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,

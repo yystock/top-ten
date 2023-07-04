@@ -8,6 +8,7 @@ import { buttonVariants } from "@/components/ui/Button";
 import getBlogBySlug from "@/app/actions/getBlogBySlug";
 import { cn } from "@/lib/utils";
 import { BsArrowLeftShort } from "react-icons/bs";
+import EditorOutput from "@/components/EditorOutput";
 
 interface BlogPageProps {
   params: {
@@ -16,7 +17,6 @@ interface BlogPageProps {
 }
 
 export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
-  console.log("blog--------", params);
   const blog = await getBlogBySlug(params);
 
   if (!blog) {
@@ -24,26 +24,13 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
   }
   return {
     title: blog.title,
-    description: blog.content,
-
     openGraph: {
       title: blog.title,
-      description: blog.content,
       type: "article",
-
-      //   images: [
-      //     {
-      //     //   url: ogUrl.toString(),
-      //       width: 1200,
-      //       height: 630,
-      //       alt: blog.title,
-      //     },
-      //   ],
     },
     twitter: {
       card: "summary_large_image",
       title: blog.title,
-      description: blog.content,
       //   images: [ogUrl.toString()],
     },
   };
@@ -51,10 +38,6 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
 
 export default async function BlogPage({ params }: BlogPageProps) {
   const blog = await getBlogBySlug(params);
-
-  function createMarkup(content: string) {
-    return { __html: content };
-  }
 
   if (!blog) {
     notFound();
@@ -92,8 +75,9 @@ export default async function BlogPage({ params }: BlogPageProps) {
       {blog.imgSrc && (
         <Image src={blog.imgSrc} alt={blog.title} width={720} height={405} className="my-8 rounded-md border bg-muted transition-colors" priority />
       )}
-      <div dangerouslySetInnerHTML={createMarkup(blog.content)} />
+
       <hr className="mt-12" />
+      <div>{blog.content && <EditorOutput content={blog.content} />}</div>
       <div className="flex justify-center py-6 lg:py-10">
         <Link href="/blog" className={cn(buttonVariants({ variant: "ghost" }))}>
           <BsArrowLeftShort className="mr-2 h-4 w-4" />

@@ -1,7 +1,6 @@
-import "../globals.css";
+import "@/styles/global.css";
 
-import ToasterProvider from "@/app/providers/ToasterProvider";
-import SideBar from "@/components/server/SideBar";
+import SideBar from "@/components/navbar/SideBar";
 
 export const metadata = {
   title: "Next.js 13 + PlanetScale + NextAuth + Tailwind CSS",
@@ -10,13 +9,11 @@ export const metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="flex min-h-full">
+    <div className="container flex gap-6">
+      <aside>
         <SideBar />
-
-        <ToasterProvider />
-        {children}
-      </body>
-    </html>
+      </aside>
+      <main className="flex w-full flex-1 flex-col pl-4 pr-6">{children}</main>
+    </div>
   );
 }

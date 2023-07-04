@@ -1,16 +1,24 @@
+import { DashboardHeader } from "@/components/Heading";
 import getStars from "../../actions/getStars";
 import { columns } from "./columns";
 import { DataTable } from "@/components/ui/DataTable";
-import Starheader from "./starheader";
-const Stars = async () => {
-  const users = await getStars();
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/Button";
+import Link from "next/link";
+
+const StarsDashboard = async () => {
+  const stars = await getStars();
 
   return (
-    <div className="container mx-auto h-full py-10">
-      <Starheader />
-      <DataTable columns={columns} data={users} />
+    <div className="grid items-start gap-8">
+      <DashboardHeader heading="Star" text="Create and manage top-10 stars">
+        <Link className={cn("active: bg-blue-300", buttonVariants({ variant: "default" }))} href="/dashboard/stars/create">
+          Add Star
+        </Link>
+      </DashboardHeader>
+      <DataTable columns={columns} data={stars} />
     </div>
   );
 };
 
-export default Stars;
+export default StarsDashboard;

@@ -30,7 +30,7 @@ const AddPost: React.FC<AddPostProps> = ({ currentUser }) => {
           setContent("");
           router.refresh();
         })
-        .catch(() => {
+        .catch((error) => {
           toast.error("Error creating post.");
         })
         .finally(() => {

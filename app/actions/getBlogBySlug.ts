@@ -7,7 +7,6 @@ interface IParams {
 export default async function getBlogBySlug(params: IParams) {
   try {
     const { slug } = params;
-    console.log("slug!!!!!!!!", slug);
     const blog = await db.blog.findUnique({
       where: {
         slug: slug,

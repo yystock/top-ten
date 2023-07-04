@@ -1,7 +1,7 @@
 "use client";
 import Avatar from "@/components/Avatar";
-import { formatDate } from "@/lib/utils";
-import { Comment } from "@prisma/client";
+import { formatTimeToNow } from "@/lib/utils";
+
 import { User } from "next-auth";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -55,11 +55,11 @@ const Comment: FC<CommentProps> = ({ currentUser, comment }) => {
               <p className="font-bold text-black dark:text-slate-200">{comment.user.name}</p>
             </div>
             <div>
-              <p className="text-slate-400">{formatDate(comment.createdAt.toISOString())}</p>
+              <p className="text-slate-400">{formatTimeToNow(new Date(comment.createdAt))}</p>
             </div>
           </div>
         </div>
-        <div className="h-auto flex-wrap py-5 px-2 text-left">
+        <div className="h-auto flex-wrap px-2 py-5 text-left">
           <p className="break-words">{comment.title}</p>
         </div>
         {comment.userId === currentUser?.id && (

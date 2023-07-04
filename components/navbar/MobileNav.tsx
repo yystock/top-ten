@@ -2,14 +2,18 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { siteNav } from "@/config/site";
+import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
 export function MobileNav() {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
+  const pathname = usePathname();
 
   return (
     <>
       <div className="relative block hover:bg-slate-500 md:hidden">
-        <button type="button" className="block border-b-2 border-transparent py-3 px-6" onClick={() => setNavbarOpen(!navbarOpen)}>
+        <button type="button" className="block border-b-2 border-transparent px-6 py-3" onClick={() => setNavbarOpen(!navbarOpen)}>
           <span className="sr-only">Mobile menu</span>
           <svg
             className="mr-2 inline-block h-6 w-6"
@@ -34,53 +38,34 @@ export function MobileNav() {
           </div>
 
           {/* <!-- Mobile navbar --> */}
-          <nav className=" fixed left-0 top-0 z-40 flex h-full  w-64 flex-col overflow-auto border-r border-slate-700 bg-white dark:border-slate-200 dark:bg-slate-800">
+          <nav className=" border-lg fixed left-0 top-0 z-40 flex  h-full w-64 flex-col overflow-auto bg-background">
             <div className="mb-auto">
               {/* <!--navigation--> */}
               <nav className="relative flex flex-wrap">
-                <div className="w-full border-b border-slate-700 py-4 text-center font-bold dark:border-slate-300">YY</div>
+                <div className="w-full border border-b py-4 text-center font-bold ">YY</div>
                 <ul className="float-none flex w-full flex-col">
-                  <li className="relative">
-                    <Link href="/" className="block border-b border-slate-700 py-2 px-5 hover:bg-slate-400 dark:border-slate-300">
-                      Home
-                    </Link>
-                  </li>
-
                   {/* <!-- dropdown with submenu--> */}
-                  <li className="dropdown relative">
-                    <Link className="block border-b border-slate-700 py-2 px-5 hover:bg-slate-400 dark:border-slate-300" href="/news">
-                      News
-                    </Link>
-                  </li>
-
-                  <li className="relative">
-                    <Link href="/posts" className="block border-b border-slate-700 py-2 px-5 hover:bg-slate-400 dark:border-slate-300">
-                      Posts
-                    </Link>
-                  </li>
-
-                  <li className="relative">
-                    <Link href="/blog" className="block border-b border-slate-700 py-2 px-5 hover:bg-slate-400 dark:border-slate-300">
-                      Blog
-                    </Link>
-                  </li>
-
-                  <li className="relative">
-                    <Link href="/shop" className="block border-b border-slate-700 py-2 px-5 hover:bg-slate-400 dark:border-slate-300">
-                      Shop
-                    </Link>
-                  </li>
-
-                  <li className="relative">
-                    <Link href="/about" className="block border-b border-slate-700 py-2 px-5 hover:bg-slate-400 dark:border-slate-300">
-                      About
-                    </Link>
-                  </li>
+                  {siteNav.map((item, index) => (
+                    <li>
+                      <Link
+                        key={index}
+                        href={item.href}
+                        className={cn(
+                          "block border border-b px-5 py-2 hover:bg-slate-400 ",
+                          pathname !== "/" && item.href.startsWith(`${pathname}`)
+                            ? "border-b-2 border-foreground py-2 text-foreground"
+                            : "text-foreground/60"
+                        )}
+                      >
+                        {item.title}
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </nav>
             </div>
             {/* <!-- copyright --> */}
-            <div className="mt-6 py-4 px-6 text-center text-sm">
+            <div className="mt-6 px-6 py-4 text-center text-sm">
               <p>
                 Copyright <Link href="#">New Media</Link> - All right reserved
               </p>

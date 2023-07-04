@@ -1,4 +1,4 @@
-import type { Post, User, PostHeart, Comment, CommentHeart } from "@prisma/client";
+import type { Post, User, PostHeart, Comment, CommentHeart, UserRole } from "@prisma/client";
 
 export type ExtendedPost = Post & {
   hearts: PostHeart[];

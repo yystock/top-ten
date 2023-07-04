@@ -7,7 +7,7 @@ async function Blogs() {
   const blogs = await getBlogs();
 
   return (
-    <>
+    <div>
       {blogs && (
         <div className="container">
           <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between md:gap-8">
@@ -36,7 +36,7 @@ async function Blogs() {
           <div className="mt-10 flex justify-center"></div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

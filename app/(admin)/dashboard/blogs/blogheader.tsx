@@ -1,25 +1,24 @@
-"use client"
-import Button from "@/app/components/Button";
-import StarModal from "@/app/components/modals/StarModal";
-import useStarModal from "@/app/hooks/useStarModal";
-import { useRouter } from "next/navigation";
+import { buttonVariants } from "@/components/ui/Button";
 
-interface starheaderProps {
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 
-    
-}
- 
+interface starheaderProps {}
+
 const starheader: React.FC<starheaderProps> = () => {
-    const router = useRouter();
-    return (
-      <div className="flex gap">
-        <StarModal />
-        <div className="bg-primary w-2/3"></div>
-        <div className="w-1/3">
-          <Button label="AddStar" onClick={() => router.push("./dashboard/blogs/create")} />
-        </div>
+  return (
+    <div className="flex items-center justify-between px-2">
+      <div className="grid gap-1">
+        <h1 className="font-heading text-3xl md:text-4xl">Blog</h1>
+        <p className="text-lg text-muted-foreground">Create and Manage Blog</p>
       </div>
-    );
-}
- 
+      <div>
+        <Link href="/dashboard/blogs/create" className={cn(buttonVariants({ variant: "default" }))}>
+          Add Blog
+        </Link>
+      </div>
+    </div>
+  );
+};
+
 export default starheader;

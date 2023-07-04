@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import prisma from "@/lib/db";
+import { db } from "@/lib/db";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 
 export async function POST(request: Request) {
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
   }
 
   // Check if user has already liked the post
-  const alreadyLiked = await prisma.heart.findFirst({
+  const alreadyLiked = await db.postHeart.findFirst({
     where: {
       postId: postId as string,
       userId: currentUser?.id as string,
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
 
   try {
     if (!alreadyLiked) {
-      const result = await prisma.heart.create({
+      const result = await db.postHeart.create({
         data: {
           postId: postId as string,
           userId: currentUser?.id as string,
@@ -37,10 +37,8 @@ export async function POST(request: Request) {
       return NextResponse.json(result);
     } else {
       // Delete like if user has already liked the post
-      const result = await prisma.heart.delete({
-        where: {
-          id: alreadyLiked.id,
-        },
+      const result = await db.postHeart.delete({
+        where: {},
       });
       return NextResponse.json(result);
     }

@@ -1,6 +1,6 @@
 "use client";
 
-import { formatDate } from "@/lib/utils";
+import { formatTimeToNow } from "@/lib/utils";
 import { useRouter, useSelectedLayoutSegment } from "next/navigation";
 import { FC, useState } from "react";
 import Link from "next/link";
@@ -68,18 +68,18 @@ const SinglePost: FC<SinglePost> = ({ post, currentUser }) => {
     <>
       <div className="mt-5 rounded-xl border-2 py-3 pl-4 pr-2">
         <div className="flex items-center justify-start">
-          {post.user.image && <Avatar src={post.user.image} height={40} width={40} />}
+          <Avatar src={post.user.image} height={40} width={40} />
           <span className="w-3" />
           <div className="flex flex-wrap pl-1.5 ">
             <div className="w-full">
               <b className="text-black dark:text-slate-200">{post.user.name}</b>
             </div>
             <div className="w-full">
-              <p className="text-slate-400">{formatDate(post.createdAt.toISOString())}</p>
+              <p className="text-slate-400">{formatTimeToNow(new Date(post.createdAt))}</p>
             </div>
           </div>
         </div>
-        <div className="h-auto flex-wrap py-5 px-3 text-left">
+        <div className="h-auto flex-wrap px-3 py-5 text-left">
           <p className="break-words">{post.title}</p>
         </div>
         <div className="mt-1.5 flex items-center justify-start">
@@ -103,7 +103,7 @@ const SinglePost: FC<SinglePost> = ({ post, currentUser }) => {
           )}
           <span className="w-1" />
           <p className={`${currentUserLiked ? "text-red-500" : "text-slate-400"}`}>{post.hearts.length}</p>
-          {post.user.id === currentUser?.id && <Trash2 onClick={handler} />}
+          <div className="ml-auto ">{post.user.id === currentUser?.id && <Trash2 onClick={handler} />}</div>
         </div>
       </div>
       <span className="h-1" />

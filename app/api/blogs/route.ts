@@ -12,7 +12,6 @@ const blogCreateSchema = z.object({
 
 export async function POST(req: Request) {
   try {
-    console.log("post route");
     const currentUser = await getCurrentUser();
 
     if (!currentUser) {
@@ -20,7 +19,6 @@ export async function POST(req: Request) {
     }
 
     const json = await req.json();
-    console.log(json);
     const body = blogCreateSchema.parse(json);
 
     const blog = await db.blog.create({
@@ -36,7 +34,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(blog);
   } catch (error) {
-    console.log(error);
+    console.log("[BlogS_POST]", error);
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 });
     }

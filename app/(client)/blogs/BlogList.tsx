@@ -3,7 +3,9 @@ import { TbPhoto } from "react-icons/tb";
 import Image from "next/image";
 import { Blog } from "@prisma/client";
 import { User } from "@prisma/client";
-// import { parseISO, format } from "date-fns";
+
+import Avatar from "@/components/Avatar";
+
 interface BlogListProps {
   blog: Blog & { user: User };
   aspect?: string;
@@ -71,20 +73,10 @@ const BlogList: React.FC<BlogListProps> = ({ blog, aspect, minimal = false, path
               </Link>
             </h2>
 
-            <div className="hidden">
-              {blog.content && (
-                <p className="line-clamp-3 mt-2 text-sm text-gray-500 dark:text-gray-400">
-                  <Link href={`/blogs/${pathPrefix ? `${pathPrefix}/` : ""}${blog.slug}`} legacyBehavior>
-                    {blog.content}
-                  </Link>
-                </p>
-              )}
-            </div>
-
             <div className="mt-3 flex items-center space-x-3 text-gray-500 dark:text-gray-400">
               <div className="flex items-center gap-3">
                 <div className="relative h-5 w-5 flex-shrink-0">
-                  {blog.user.image && <Image src={blog.user.image} alt={blog.user.id} className="rounded-full object-cover" fill sizes="20px" />}
+                  <Avatar src={blog.user.image} height={20} width={20} />
                 </div>
                 <span className="truncate text-sm">{blog.user.name}</span>
               </div>

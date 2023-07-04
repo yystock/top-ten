@@ -40,12 +40,10 @@ export default function SignUpForm({ className, ...props }: SignUpFormProps) {
       .post("/api/email/activate", data)
       .then(() => {
         setIsLoading(false);
-
         router.push("/");
       })
 
       .catch((error) => {
-        console.log("waaaaa", error);
         toast.error(error);
       });
 

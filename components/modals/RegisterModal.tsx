@@ -13,7 +13,7 @@ import useRegisterModal from "@/app/hooks/useRegisterModal";
 
 import Modal from "./Modal";
 import Input from "../inputs/Input";
-import Heading from "../Heading";
+import { Heading } from "../Heading";
 import { Button } from "../ui/Button";
 
 import { Twitter } from "lucide-react";

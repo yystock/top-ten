@@ -1,17 +1,36 @@
 import Feed from "./Feed";
-import getPosts from "../../actions/getPosts";
 import { getCurrentUser } from "@/lib/session";
+import AddPost from "./AddPost";
+import { db } from "@/lib/db";
+import { notFound } from "next/navigation";
 
 export default async function Posts() {
   const currentUser = await getCurrentUser();
-  const data = await getPosts();
+
+  const posts = await db.post.findMany({
+    take: 2,
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      user: true,
+      hearts: true,
+      comments: true,
+    },
+  });
+
+  if (!posts) return notFound();
 
   return (
-    <div>
-      <div className="sm:w-full md:w-3/5">
-        <Feed data={data} currentUser={currentUser} />
+    <div className="items-center px-20">
+      <span className="h-0.5" />
+      <div className="my-5 flex">
+        <h1 className="bg-gradient-to-r from-blue-500 via-blue-600 to-pink-600 bg-clip-text text-4xl font-bold text-transparent">Feed</h1>
       </div>
-      <div className="sm:hidden md:w-2/5"></div>
+      <div className="mb-7 pt-0.5">
+        <AddPost currentUser={currentUser} />
+      </div>
+      <Feed firstPosts={posts} currentUser={currentUser} />
     </div>
   );
 }

@@ -3,9 +3,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 import { Star } from "@prisma/client";
+import { StarOperations } from "@/app/(admin)/dashboard/stars/StarOperations";
 
 export const columns: ColumnDef<Star>[] = [
   {
@@ -17,8 +16,8 @@ export const columns: ColumnDef<Star>[] = [
     header: "Name",
   },
   {
-    accessorKey: "profile",
-    header: "Profile",
+    accessorKey: "picture",
+    header: "Picture",
   },
   {
     accessorKey: "vote",
@@ -29,6 +28,13 @@ export const columns: ColumnDef<Star>[] = [
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const star = row.original;
+      return <StarOperations starId={star.id} />;
     },
   },
 ];

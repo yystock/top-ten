@@ -7,10 +7,10 @@ import { getCurrentUser } from "@/lib/session";
 
 const Nav = async () => {
   const user = await getCurrentUser();
-  console.log("hello");
+
   return (
     // sticky top-0 z-40 for sticky navbar
-    <header className="fixed inset-x-0 top-0 z-[10] h-fit border-b bg-background py-2 shadow-sm">
+    <header className="fixed inset-x-0 top-0 z-[50] h-fit border-b bg-background py-2 shadow-sm">
       <div
         className="container mx-auto flex h-full 
           max-w-7xl items-center
