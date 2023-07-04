@@ -1,6 +1,6 @@
 import getBlogs from "../../actions/getBlogs";
 import { columns } from "./columns";
-import { DataTable } from "@/components/ui/DataTable";
+import { DataTable } from "@/components/ui/data-table";
 import Blogheader from "./blogheader";
 const BlogsDashboard = async () => {
   const blogs = await getBlogs();

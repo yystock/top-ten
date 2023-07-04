@@ -819,7 +819,7 @@
     "client-only" "0.0.1"
     "use-sync-external-store" "^1.2.0"
 
-"@tanstack/react-table@^8.9.1":
+"@tanstack/react-table@^8.9.3":
   "integrity" "sha512-Ng9rdm3JPoSCi6cVZvANsYnF+UoGVRxflMb270tVj0+LjeT/ZtZ9ckxF6oLPLcKesza6VKBqtdF9mQ+vaz24Aw=="
   "resolved" "https://registry.npmjs.org/@tanstack/react-table/-/react-table-8.9.3.tgz"
   "version" "8.9.3"

@@ -1,7 +1,7 @@
 import { DashboardHeader } from "@/components/Heading";
 import getStars from "../../actions/getStars";
 import { columns } from "./columns";
-import { DataTable } from "@/components/ui/DataTable";
+import { DataTable } from "@/components/ui/data-table";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/Button";
 import Link from "next/link";

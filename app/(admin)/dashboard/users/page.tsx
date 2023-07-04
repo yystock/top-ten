@@ -1,7 +1,7 @@
 import { DashboardHeader } from "@/components/Heading";
 import getUsers from "../../actions/getUsers";
 import { columns } from "./columns";
-import { DataTable } from "@/components/ui/DataTable";
+import { DataTable } from "@/components/ui/data-table";
 
 const User = async () => {
   const users = await getUsers();
