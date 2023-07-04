@@ -11,7 +11,7 @@ export function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <>
+    <div>
       <div className="relative block hover:bg-slate-500 md:hidden">
         <button type="button" className="block border-b-2 border-transparent px-6 py-3" onClick={() => setNavbarOpen(!navbarOpen)}>
           <span className="sr-only">Mobile menu</span>
@@ -75,6 +75,6 @@ export function MobileNav() {
       ) : (
         <></>
       )}
-    </>
+    </div>
   );
 }

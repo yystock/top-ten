@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import getCurrentUser from "@/app/actions/getCurrentUser";
-import prisma from "@/lib/db";
+import { db } from "@/lib/db";
 
 interface IParams {
   commentId?: string;
@@ -20,7 +20,7 @@ export async function DELETE(request: Request, { params }: { params: IParams }) 
     throw new Error("Invalid ID");
   }
 
-  const comment = await prisma.comment.deleteMany({
+  const comment = await db.comment.deleteMany({
     where: {
       id: commentId,
       userId: currentUser.id,

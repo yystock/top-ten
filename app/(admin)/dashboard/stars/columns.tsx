@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Star } from "@prisma/client";
 import { StarOperations } from "@/app/(admin)/dashboard/stars/StarOperations";
