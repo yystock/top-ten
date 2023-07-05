@@ -50,11 +50,11 @@ const Feed: React.FC<FeedProps> = ({ firstPosts, currentUser, star }) => {
         if (index === posts.length - 1) {
           return (
             <li key={post.id} ref={ref}>
-              <SinglePost key={post.id} post={post} currentUser={currentUser} />
+              <SinglePost key={post.id} index={index} post={post} currentUser={currentUser} />
             </li>
           );
         } else {
-          return <SinglePost key={post.id} post={post} currentUser={currentUser} />;
+          return <SinglePost key={post.id} index={index} post={post} currentUser={currentUser} />;
         }
       })}
       {isFetchingNextPage && (

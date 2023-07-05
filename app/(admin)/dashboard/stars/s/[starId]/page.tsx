@@ -1,4 +1,4 @@
-import getStarById from "@/app/(admin)/actions/getStarById";
+import getStarById from "@/app/actions/getStarById";
 import StarForm from "@/components/StarForm";
 
 interface IParams {

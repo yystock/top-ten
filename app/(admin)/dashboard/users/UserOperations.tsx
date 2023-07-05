@@ -17,7 +17,7 @@ import {
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/DropdownMenu";
 import { toast } from "react-hot-toast";
 import { Icons } from "@/components/Icons";
-import { Copy } from "lucide-react";
+import { Copy, Loader2 } from "lucide-react";
 
 async function deleteUser(userId: string) {
   const response = await fetch(`/api/users/${userId}`, {
@@ -94,7 +94,7 @@ export function UserOperations({ userId }: UserOperationsProps) {
               }}
               className="bg-red-500 focus:ring-red-500"
             >
-              {isDeleteLoading ? <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> : <Icons.trash className="mr-2 h-4 w-4" />}
+              {isDeleteLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Icons.trash className="mr-2 h-4 w-4" />}
               <span>Delete</span>
             </AlertDialogAction>
           </AlertDialogFooter>

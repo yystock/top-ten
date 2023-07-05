@@ -1,5 +1,5 @@
 import { DashboardHeader } from "@/components/Heading";
-import getStars from "../../actions/getStars";
+import getStars from "@/app/actions/getStars";
 import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 import { cn } from "@/lib/utils";

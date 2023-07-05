@@ -1,5 +1,5 @@
 import { DashboardHeader } from "@/components/Heading";
-import getUsers from "../actions/getUsers";
+import getUsers from "@/app/actions/getUsers";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";

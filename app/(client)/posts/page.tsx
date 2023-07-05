@@ -23,11 +23,10 @@ export default async function Posts() {
 
   return (
     <div className="items-center px-20">
-      <span className="h-0.5" />
-      <div className="my-5 flex">
+      <div className="flex">
         <h1 className="bg-gradient-to-r from-blue-500 via-blue-600 to-pink-600 bg-clip-text text-4xl font-bold text-transparent">Feed</h1>
       </div>
-      <div className="mb-7 pt-0.5">
+      <div className="pt-0.5">
         <AddPost currentUser={currentUser} />
       </div>
       <Feed firstPosts={posts} currentUser={currentUser} />

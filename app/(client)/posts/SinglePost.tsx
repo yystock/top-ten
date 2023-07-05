@@ -10,13 +10,15 @@ import toast from "react-hot-toast";
 import { User } from "next-auth";
 import { ExtendedPost } from "@/types/db";
 import { Heart, Trash2 } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface SinglePost {
   post: ExtendedPost;
   currentUser?: User;
+  index?: number;
 }
 
-const SinglePost: FC<SinglePost> = ({ post, currentUser }) => {
+const SinglePost: FC<SinglePost> = ({ post, currentUser, index }) => {
   const currentUserLiked = (currentUser && post.hearts?.some((like) => like.userId === currentUser?.id)) || false;
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -66,7 +68,13 @@ const SinglePost: FC<SinglePost> = ({ post, currentUser }) => {
 
   return (
     <>
-      <div className="mt-5 rounded-xl border-2 py-3 pl-4 pr-2">
+      <motion.div
+        transition={{ dely: 0.1 * (index || 1) }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 20 }}
+        className="mt-5 rounded-xl border-2 py-3 pl-4 pr-2"
+      >
         <div className="flex items-center justify-start">
           <Avatar src={post.user.image} height={40} width={40} />
           <span className="w-3" />
@@ -105,7 +113,7 @@ const SinglePost: FC<SinglePost> = ({ post, currentUser }) => {
           <p className={`${currentUserLiked ? "text-red-500" : "text-slate-400"}`}>{post.hearts.length}</p>
           <div className="ml-auto ">{post.user.id === currentUser?.id && <Trash2 onClick={handler} />}</div>
         </div>
-      </div>
+      </motion.div>
       <span className="h-1" />
 
       {visible && (

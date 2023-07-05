@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="mx-auto h-full max-w-7xl pt-12 sm:container">
+    <div className="mx-auto h-full max-w-7xl sm:container">
       <div className="grid grid-cols-1 gap-y-4 py-6 md:grid-cols-3 md:gap-x-4">
         <ul className="col-span-2 flex flex-col space-y-6">{children}</ul>
 

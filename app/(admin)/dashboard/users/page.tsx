@@ -1,5 +1,5 @@
 import { DashboardHeader } from "@/components/Heading";
-import getUsers from "../../actions/getUsers";
+import getUsers from "@/app/actions/getUsers";
 import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 

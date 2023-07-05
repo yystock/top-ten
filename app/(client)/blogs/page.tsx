@@ -1,6 +1,6 @@
 import React from "react";
 import BlogList from "./BlogList";
-import getBlogs from "@/app/(admin)/actions/getBlogs";
+import getBlogs from "@/app/actions/getBlogs";
 import Link from "next/link";
 
 async function Blogs() {
