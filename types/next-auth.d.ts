@@ -6,6 +6,7 @@ declare module "next-auth/jwt" {
     id: string;
     username: string | null;
     role: string;
+    lastTimeVote: DateTime;
   }
 }
 
@@ -14,6 +15,7 @@ declare module "next-auth" {
     id: string;
     username: string | null;
     role: string;
+    lastTimeVote: DateTime;
   }
 }
 

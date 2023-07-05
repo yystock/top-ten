@@ -58,6 +58,7 @@ export const authOptions: NextAuthOptions = {
           username: user.username,
           image: user.image,
           role: user.role,
+          lastTimeVote: user.lastTimeVote,
         };
       },
     }),
@@ -101,6 +102,7 @@ export const authOptions: NextAuthOptions = {
         session.user.role = token.role;
         session.user.username = token.username;
         session.user.email = token.email;
+        session.user.lastTimeVote = token.lastTimeVote;
       }
       return session;
     },
@@ -112,6 +114,7 @@ export const authOptions: NextAuthOptions = {
           token.role = user.role;
           token.picture = user.image;
           token.username = user.username;
+          token.lastTimeVote = user.lastTimeVote;
           return token;
         }
         console.log("jwt!");
@@ -130,6 +133,7 @@ export const authOptions: NextAuthOptions = {
         token.picture = dbUser.image;
         token.username = dbUser.username;
         token.email = dbUser.email;
+        token.lastTimeVote = dbUser.lastTimeVote;
       }
 
       return token;

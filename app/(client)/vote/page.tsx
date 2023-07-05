@@ -7,13 +7,14 @@ import SingleVote from "./SingleVote";
 export default async function Vote() {
   const currentUser = await getCurrentUser();
   const stars = await getStars();
+
   if (!stars) {
     return notFound();
   }
   return (
     <div className="lg:grid-col-4 grid gap-16 sm:gap-8 md:grid-cols-2">
       {stars.map((star, index) => (
-        <SingleVote star={star} index={index} />
+        <SingleVote star={star} index={index} currentUser={currentUser} />
       ))}
     </div>
   );
