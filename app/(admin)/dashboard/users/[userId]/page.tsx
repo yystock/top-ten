@@ -1,4 +1,4 @@
-import getUserById from "@/app/(admin)/actions/getUserById";
+import getUserById from "@/app/actions/getUserById";
 import UserForm from "@/components/UserForm";
 
 interface IParams {

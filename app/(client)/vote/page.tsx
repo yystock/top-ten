@@ -11,7 +11,7 @@ export default async function Vote() {
     return notFound();
   }
   return (
-    <div className="lg:grid-col-4 grid-rows grid grid-flow-row auto-rows-auto gap-8 sm:gap-y-16 md:grid-cols-2">
+    <div className="lg:grid-col-4 grid gap-16 sm:gap-8 md:grid-cols-2">
       {stars.map((star, index) => (
         <SingleVote star={star} index={index} />
       ))}
