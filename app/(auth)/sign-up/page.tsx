@@ -3,13 +3,19 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/Button";
 import SignUpForm from "@/components/SignUpForm";
+import { getCurrentUser } from "@/lib/session";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Create an account",
   description: "Create an account to get started.",
 };
 
-export default function RegisterPage() {
+export default async function RegisterPage() {
+  const user = await getCurrentUser();
+  if (user) {
+    redirect("/");
+  }
   return (
     <div className="container mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
       <div className="flex flex-col space-y-2 text-center">

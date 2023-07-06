@@ -3,15 +3,21 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/Button";
-import SignInForm from "@/components/SignUpForm";
+import SignInForm from "@/components/SignInForm";
 import { ChevronLeft } from "lucide-react";
+import { getCurrentUser } from "@/lib/session";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Login",
   description: "Login to your account",
 };
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const user = await getCurrentUser();
+  if (user) {
+    redirect("/");
+  }
   return (
     <div className="container flex  flex-col items-center justify-center">
       <Link href="/" className={cn(buttonVariants({ variant: "ghost" }), "absolute hidden md:left-8 md:top-20")}>

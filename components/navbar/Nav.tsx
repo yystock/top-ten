@@ -7,6 +7,7 @@ import { getCurrentUser } from "@/lib/session";
 
 const Nav = async () => {
   const user = await getCurrentUser();
+  console.log("user", user);
 
   return (
     <header className="fixed inset-x-0 top-0 z-[50] h-fit border-b bg-background py-2 shadow-sm">

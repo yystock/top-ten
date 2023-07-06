@@ -4,10 +4,8 @@ import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 
 import ToasterProvider from "./providers/ToasterProvider";
-
-import RegisterModal from "@/components/modals/RegisterModal";
 import { ThemeProvider } from "./providers/ThemeProvider";
-import LoginModal from "@/components/modals/LoginModal";
+import ModalProvider from "./providers/ModalProvider";
 import QueryProvider from "./providers/QueryClientProvider";
 
 export const metadata = {
@@ -33,8 +31,7 @@ export default async function RootLayout({ children, authModal }: { children: Re
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <QueryProvider>
             <ToasterProvider />
-            <LoginModal />
-            <RegisterModal />
+            <ModalProvider />
             {authModal}
 
             <Nav />

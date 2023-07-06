@@ -91,7 +91,7 @@ export default function SignInForm({ className, ...props }: SignInFormProps) {
         className={cn(buttonVariants({ variant: "outline" }))}
         onClick={() => {
           setIsGoogleLoading(true);
-          signIn("Google");
+          signIn("google");
         }}
         disabled={isLoading || isGoogleLoading}
       >
