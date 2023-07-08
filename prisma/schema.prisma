@@ -69,7 +69,8 @@ model User {
   commentHearts CommentHeart[]
   blogs         Blog[]
 
-  role UserRole @default(USER)
+  role  UserRole @default(USER)
+  Event Event[]
 }
 
 model Vote {
@@ -116,7 +117,6 @@ model Blog {
   hearts    BlogHeart[]
   comments  Comment[]
   star      Star?       @relation(fields: [starId], references: [id], onDelete: Cascade)
-  Image     Image[]
 
   @@index([authorId])
   @@index([starId])
@@ -191,15 +191,31 @@ model ActivateToken {
 }
 
 model Image {
-  id        String   @id @default(uuid())
-  blogId    String?
-  blog      Blog?    @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  id String @id @default(uuid())
+
   url       String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   postId    String?
   post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  eventId   String?
+  event     Event?   @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
-  @@index([blogId])
+  @@index([eventId])
   @@index([postId])
+}
+
+model Event {
+  id String @id @default(uuid())
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  images      Image[]
+  title       String
+  location    String
+  startAt     DateTime
+  endAt       DateTime
+  description String
 }

@@ -45,7 +45,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
 
   return (
     <article className="container relative max-w-3xl py-6 lg:py-10">
-      <Link href="/blog" className={cn(buttonVariants({ variant: "ghost" }), "absolute left-[-200px] top-14 hidden xl:inline-flex")}>
+      <Link href="/blogs" className={cn(buttonVariants({ variant: "ghost" }), "absolute left-[-200px] top-14 hidden xl:inline-flex")}>
         <BsArrowLeftShort className="mr-2 h-4 w-4" />
         See all blogs
       </Link>
@@ -79,7 +79,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
       <hr className="mt-12" />
       <div>{blog.content && <EditorOutput content={blog.content} />}</div>
       <div className="flex justify-center py-6 lg:py-10">
-        <Link href="/blog" className={cn(buttonVariants({ variant: "ghost" }))}>
+        <Link href="/blogs" className={cn(buttonVariants({ variant: "ghost" }))}>
           <BsArrowLeftShort className="mr-2 h-4 w-4" />
           See all blogs
         </Link>

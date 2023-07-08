@@ -96,7 +96,6 @@ export const authOptions: NextAuthOptions = {
     // },
 
     session: async ({ session, token }) => {
-      console.log("we are in a session");
       if (token) {
         session.user.id = token.id;
         session.user.image = token.picture;
@@ -107,7 +106,13 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-    jwt: async ({ user, token, account, profile }) => {
+    jwt: async ({ user, token, account, profile, trigger, session }) => {
+      if (trigger === "update" && session?.lastTimeVote) {
+        console.log("update:", session);
+        token.lastTimeVote = session.lastTimeVote;
+        return token;
+      }
+
       if (account?.provider === "credentials") {
         console.log("First time email creating user");
 
@@ -117,7 +122,6 @@ export const authOptions: NextAuthOptions = {
         token.picture = user.image;
         token.username = user.username;
         token.lastTimeVote = user.lastTimeVote;
-        console.log("token::: ", token);
         return token;
       }
 
@@ -149,10 +153,9 @@ export const authOptions: NextAuthOptions = {
         token.picture = theUser.image;
         token.username = theUser.username;
         token.lastTimeVote = theUser.lastTimeVote;
-        console.log("token::: ", token);
         return token;
       }
-      console.log("not first time");
+      // console.log("not first time");
       return token;
     },
   },
