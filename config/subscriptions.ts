@@ -1,10 +1,4 @@
-type SubscriptionPlan = {
-  name: string;
-  description: string;
-  price: number;
-  stripePriceId: string;
-};
-
+import { SubscriptionPlan } from "@/types/db";
 export const SubscriptionPlans: SubscriptionPlan[] = [
   {
     name: "Free",

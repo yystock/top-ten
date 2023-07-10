@@ -20,3 +20,10 @@ export type SinglePostType = Post & {
 export type UserSubscriptionPlan = Pick<User, "subscription" | "stripePriceId" | "stripeCustomerId" | "stripeSubscriptionId"> & {
   stripeCurrentPeriodEnd?: number;
 };
+
+export type SubscriptionPlan = {
+  name: string;
+  description: string;
+  price: number;
+  stripePriceId: string;
+};

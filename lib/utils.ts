@@ -52,9 +52,6 @@ export function formatTimeToNow(date: Date): string {
   });
 }
 
-// export function isToday(someDate: Date) {
-//   if (!someDate) return false;
-//   console.log(typeof someDate, someDate);
-//   const today = new Date();
-//   return someDate.getDate() == today.getDate() && someDate.getMonth() == today.getMonth() && someDate.getFullYear() == today.getFullYear();
-// }
+export function absoluteUrl(path: string) {
+  return `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
+}
