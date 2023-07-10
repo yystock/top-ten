@@ -11,6 +11,8 @@
 - [ ] Pagination
 - [ ] User Authorization
 - [ ] Admin Dashboard
+- [ ] Stripe Payment
+- [ ] Cron Jobs
 
 ## Technologies
 
