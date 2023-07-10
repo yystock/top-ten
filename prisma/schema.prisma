@@ -44,6 +44,13 @@ enum UserRole {
   CREATOR
 }
 
+enum SubscriptionTier {
+  FREE
+  SILVER
+  GOLD
+  CREATOR
+}
+
 model User {
   id             String          @id @default(cuid())
   name           String?
@@ -69,8 +76,15 @@ model User {
   commentHearts CommentHeart[]
   blogs         Blog[]
 
-  role  UserRole @default(USER)
-  Event Event[]
+  role                   UserRole         @default(USER)
+  Event                  Event[]
+  credits                Int              @default(10)
+  Order                  Order[]
+  subscription           SubscriptionTier @default(FREE)
+  stripeCustomerId       String?          @unique @map(name: "stripe_customer_id")
+  stripeSubscriptionId   String?          @unique @map(name: "stripe_subscription_id")
+  stripePriceId          String?          @map(name: "stripe_price_id")
+  stripeCurrentPeriodEnd DateTime?        @map(name: "stripe_current_period_end")
 }
 
 model Vote {
@@ -218,4 +232,41 @@ model Event {
   startAt     DateTime
   endAt       DateTime
   description String
+}
+
+// model Credits {
+//   id        String      @id @default(uuid())
+//   createdAt DateTime    @default(now())
+//   updatedAt DateTime    @updatedAt
+//   userId    String      @unique
+//   user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   amount    Int         @default(5)
+//   tier      CreditsTier @default(NORMAL)
+//   startAt   DateTime?
+//   expires   DateTime?
+// }
+
+// model Product {
+//   id          String   @id @default(uuid())
+//   name        String
+//   price       Decimal
+//   createdAt   DateTime @default(now())
+//   updatedAt   DateTime @updatedAt
+//   description String
+
+//   Order Order[]
+// }
+
+model Order {
+  id        String           @id @default(uuid())
+  product   SubscriptionTier
+  isPaid    Boolean          @default(false)
+  phone     String           @default("")
+  address   String           @default("")
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }

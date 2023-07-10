@@ -20,4 +20,12 @@ export const siteNav: NavItem[] = [
     title: "News",
     href: "/news",
   },
+  {
+    title: "Events",
+    href: "/events",
+  },
+  {
+    title: "Buy",
+    href: "/buy",
+  },
 ];

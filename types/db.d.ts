@@ -16,3 +16,7 @@ export type SinglePostType = Post & {
   user: User;
   comments: ExtendedComment[];
 };
+
+export type UserSubscriptionPlan = Pick<User, "subscription" | "stripePriceId" | "stripeCustomerId" | "stripeSubscriptionId"> & {
+  stripeCurrentPeriodEnd?: number;
+};
